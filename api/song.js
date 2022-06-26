@@ -1,7 +1,7 @@
 const axios = require('axios')
 
-module.exports = async(req, res) => {
-    var reqQuery = req.query.query
+module.exports = async (req, res) => {
+    const reqId = req.query.id
     res.setHeader("Access-Control-Allow-Origin", "*")
     res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate")
     res.setHeader("Open-Source", "https://github.com/cachecleanerjeet/JiosaavnAPI")
@@ -9,60 +9,46 @@ module.exports = async(req, res) => {
 
     axios({
         method: 'get',
-        url: `https://www.jiosaavn.com/api.php?p=1&q=${reqQuery.replace(/ /gi, '+')}&_format=json&_marker=0&api_version=4&ctx=wap6dot0&n=10&__call=search.getResults`
+        url: `https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids=${reqId}`
     })
 
-    .then(async function(response) {
-            var data = JSON.parse(JSON.stringify(response.data.results).replace(/&amp;/gi, "&").replace(/&copy;/gi, "©").replace(/150x150/gi, "500x500"))
-            var songRes = []
-            for (i = 0; i < data.length; i++) {
-                var songUrl;
-                var primary_artists = allArtists(data[i].more_info.artistMap.primary_artists)
-                axios({
-                    method: 'get',
-                    url: `https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids=${data[i].id}`
-                }).then(async function(resp) {
-                    var dt = JSON.parse(JSON.stringify(response.data).replace(reqId, "TempID").replace(/&amp;/gi, "&").replace(/&copy;/gi, "©")).TempID
-                    songUrl = dt[i].media_url
-                })
-                
-                songRes.push({
-                    id: data[i].id,
-                    title: data[i].title,
-                    image: data[i].image,
-                    album: data[i].more_info.album,
-                    description: `${data[i].more_info.album} · ${primary_artists}`,
-                    position: i + 1,
-                    media_url: songUrl,
-                    more_info: {
-                        vlink: data[i].more_info.vlink,
-                        primary_artists,
-                        singers: primary_artists,
-                        language: data[i].language,
-                        album_id: data[i].more_info.album_id
-                    },
-                    url: data[i].perma_url
-                })
-            }
-            if (JSON.stringify(songRes) !== "[]") {
-                res.json(songRes)
-            } else {
-                res.json({ result: "false" })
-            }
+        .then(async function (response) {
+            var data = JSON.parse(JSON.stringify(response.data).replace(reqId, "TempID").replace(/&amp;/gi, "&").replace(/&copy;/gi, "©")).TempID
+            res.json({
+                id: data.id,
+                song: data.song,
+                album: data.album,
+                year: data.year,
+                primary_artists: data.primary_artists,
+                singers: data.singers,
+                image: data.image.replace("150x150", "500x500"),
+                duration: data.duration,
+                label: data.label,
+                albumid: data.albumid,
+                language: data.language,
+                copyright_text: data.copyright_text,
+                has_lyrics: data.has_lyrics,
+                media_url: data.media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160'),
+                other_qualities: [{
+                    quality: "96_KBPS",
+                    url: data.media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_96')
+                },
+                {
+                    quality: "160_KBPS",
+                    url: data.media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')
+                },
+                {
+                    quality: "320_KBPS",
+                    url: data.media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_320')
+                }
+                ],
+                perma_url: data.perma_url,
+                album_url: data.album_url,
+                release_date: data.release_date,
+                repo_url: "https://github.com/cachecleanerjeet/JiosaavnAPI"
+            })
         })
-        .catch(function(error) {
+        .catch(function (error) {
             res.json({ result: "false" })
         })
-}
-
-function allArtists(array) {
-    let artistdata = ''
-    array.forEach((object, i) => {
-        if (i == 0) {
-            artistdata += object.name
-        } else {
-            artistdata += `, ${object.name}`
-        }
-    });
-    return artistdata
 }
