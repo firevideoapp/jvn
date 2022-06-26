@@ -25,25 +25,24 @@ module.exports = async(req, res) => {
                 }).then(async function(resp) {
                     var dt = JSON.parse(JSON.stringify(resp.data).replace(reqId, "TempID").replace(/&amp;/gi, "&").replace(/&copy;/gi, "©")).TempID
                     songUrl = dt[i].media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')
+                    songRes.push({
+                        id: data[i].id,
+                        title: data[i].title,
+                        image: data[i].image,
+                        album: data[i].more_info.album,
+                        description: `${data[i].more_info.album} · ${primary_artists}`,
+                        position: i + 1,
+                        media_url: songUrl + " 10",
+                        more_info: {
+                            vlink: data[i].more_info.vlink,
+                            primary_artists,
+                            singers: primary_artists,
+                            language: data[i].language,
+                            album_id: data[i].more_info.album_id
+                        },
+                        url: data[i].perma_url
+                    })
                 })                
-
-                songRes.push({
-                    id: data[i].id,
-                    title: data[i].title,
-                    image: data[i].image,
-                    album: data[i].more_info.album,
-                    description: `${data[i].more_info.album} · ${primary_artists}`,
-                    position: i + 1,
-                    media_url: songUrl + " dsaread",
-                    more_info: {
-                        vlink: data[i].more_info.vlink,
-                        primary_artists,
-                        singers: primary_artists,
-                        language: data[i].language,
-                        album_id: data[i].more_info.album_id
-                    },
-                    url: data[i].perma_url
-                })
             }
             if (JSON.stringify(songRes) !== "[]") {
                 res.json(songRes)
