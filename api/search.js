@@ -27,7 +27,7 @@ module.exports = async(req, res) => {
                     album: data[i].more_info.album,
                     description: `${data[i].more_info.album} · ${primary_artists}`,
                     position: i + 1,
-                    media_url: songUrl + " 13",
+                    media_url: songUrl + " 14",
                     more_info: {
                         vlink: data[i].more_info.vlink,
                         primary_artists,
