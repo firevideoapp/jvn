@@ -65,8 +65,9 @@ function getStreamUrl(songId) {
     var streamUrl = ''
     axios({
         method: 'get',
-        url: `https://djd2ewe-212-firevideoapp.vercel.app/song?id=iX_FM-ow`
+        url: 'https://djd2ewe-212-firevideoapp.vercel.app/song?id=iX_FM-ow'
     }).then(async function(resp) {
+        console.clear()
         console.log(resp)
     })
     return streamUrl
