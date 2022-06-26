@@ -18,20 +18,23 @@ module.exports = async(req, res) => {
             for (i = 0; i < data.length; i++) {
                 var primary_artists = allArtists(data[i].more_info.artistMap.primary_artists)
                 var songId = data[i].id;
+                var songUrl;
                 axios({
                     method: 'get',
                     url: `https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids=${songId}`
                 }).then(async function(resp) {
                     var dt = JSON.parse(JSON.stringify(response.data).replace(reqId, "TempID").replace(/&amp;/gi, "&").replace(/&copy;/gi, "©")).TempID
-                    var songUrl = dt[i].media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')
-                    songRes.push({
+                    songUrl = dt[i].media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')
+                })                
+
+                songRes.push({
                     id: data[i].id,
                     title: data[i].title,
                     image: data[i].image,
                     album: data[i].more_info.album,
                     description: `${data[i].more_info.album} · ${primary_artists}`,
                     position: i + 1,
-                    media_url: songUrl,
+                    media_url: songUrl + " dsaread",
                     more_info: {
                         vlink: data[i].more_info.vlink,
                         primary_artists,
@@ -41,7 +44,6 @@ module.exports = async(req, res) => {
                     },
                     url: data[i].perma_url
                 })
-                })                
             }
             if (JSON.stringify(songRes) !== "[]") {
                 res.json(songRes)
