@@ -27,7 +27,7 @@ module.exports = async(req, res) => {
                     album: data[i].more_info.album,
                     description: `${data[i].more_info.album} · ${primary_artists}`,
                     position: i + 1,
-                    media_url: songUrl + " 12",
+                    media_url: songUrl + " 13",
                     more_info: {
                         vlink: data[i].more_info.vlink,
                         primary_artists,
@@ -62,12 +62,13 @@ function allArtists(array) {
 }
 
 function getStreamUrl(songId) {
+    var streamUrl = ''
     axios({
         method: 'get',
         url: `https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids=EwWjEcGi`
     }).then(async function(response) {
         var dt = JSON.parse(JSON.stringify(response).replace(songId, "TempID").replace(/&amp;/gi, "&").replace(/&copy;/gi, "©")).TempID
-        return dt[i].media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')    
+        streamUrl = dt[i].media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')    
     })  
-    return null
+    return streamUrl
 }
