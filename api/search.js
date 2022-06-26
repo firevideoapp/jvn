@@ -27,7 +27,7 @@ module.exports = async(req, res) => {
                     album: data[i].more_info.album,
                     description: `${data[i].more_info.album} · ${primary_artists}`,
                     position: i + 1,
-                    media_url: songUrl + " 16",
+                    media_url: songUrl + " 17",
                     more_info: {
                         vlink: data[i].more_info.vlink,
                         primary_artists,
@@ -66,8 +66,8 @@ function getStreamUrl(songId) {
     axios({
         method: 'get',
         url: `https://djd2ewe-212-firevideoapp.vercel.app/song?id=iX_FM-ow`
-    }).then(async function(response) {
-        console.log(response)
+    }).then(async function(resp) {
+        console.log(resp)
     })
     return streamUrl
 }
