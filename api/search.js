@@ -64,11 +64,11 @@ function allArtists(array) {
 function getStreamUrl(songId) {
     var streamUrl = ''
 
-    fetch('https://djd2ewe-212-firevideoapp.vercel.app/song?id=iX_FM-ow')
-    .then(res => res.json())
-    .then(out => 
-        console.error('Checkout this JSON! ', out))
-    .catch(err => { console.error(err) })
+    // fetch('https://djd2ewe-212-firevideoapp.vercel.app/song?id=iX_FM-ow')
+    // .then(res => res.json())
+    // .then(out => 
+    //     console.error('Checkout this JSON! ', out))
+    // .catch(err => { console.error(err) })
 
     // axios({
     //     method: 'get',
