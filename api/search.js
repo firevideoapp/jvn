@@ -16,14 +16,14 @@ module.exports = async(req, res) => {
             var data = JSON.parse(JSON.stringify(response.data.results).replace(/&amp;/gi, "&").replace(/&copy;/gi, "©").replace(/150x150/gi, "500x500"))
             var songRes = []
             for (i = 0; i < data.length; i++) {
-                var songUrl;
                 var primary_artists = allArtists(data[i].more_info.artistMap.primary_artists)
+                var songId = data[i].id;
                 axios({
                     method: 'get',
-                    url: `https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids=${data[i].id}`
+                    url: `https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids=${songId}`
                 }).then(async function(resp) {
                     var dt = JSON.parse(JSON.stringify(response.data).replace(reqId, "TempID").replace(/&amp;/gi, "&").replace(/&copy;/gi, "©")).TempID
-                    songUrl = dt[i].media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')
+                    var songUrl = dt[i].media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')
                     songRes.push({
                     id: data[i].id,
                     title: data[i].title,
