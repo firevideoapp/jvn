@@ -18,7 +18,7 @@ module.exports = async(req, res) => {
             for (i = 0; i < data.length; i++) {
                 var primary_artists = allArtists(data[i].more_info.artistMap.primary_artists)
                 var songId = data[i].id + ""
-                var songUrl
+                var songUrl = ''
                 getStreamUrl(data[i].id)
 
                 songRes.push({
