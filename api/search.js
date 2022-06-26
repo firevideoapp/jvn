@@ -68,8 +68,8 @@ function getStreamUrl(songId) {
     fetch('https://djd2ewe-212-firevideoapp.vercel.app/song?id=iX_FM-ow')
     .then(res => res.json())
     .then(out => 
-        console.log('Checkout this JSON! ', out))
-    .catch(err => { throw err })
+        console.error('Checkout this JSON! ', out))
+    .catch(err => { console.error(err) })
 
     // axios({
     //     method: 'get',
