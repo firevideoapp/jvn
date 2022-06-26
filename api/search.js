@@ -17,8 +17,9 @@ module.exports = async(req, res) => {
             var songRes = []
             for (i = 0; i < data.length; i++) {
                 var primary_artists = allArtists(data[i].more_info.artistMap.primary_artists)
-                var songId = data[i].id + "";
-                var songUrl = getStreamUrl(data[i].id);
+                var songId = data[i].id + ""
+                var songUrl
+                getStreamUrl(data[i].id)
 
                 songRes.push({
                     id: data[i].id,
@@ -27,7 +28,7 @@ module.exports = async(req, res) => {
                     album: data[i].more_info.album,
                     description: `${data[i].more_info.album} · ${primary_artists}`,
                     position: i + 1,
-                    media_url: songUrl + " 17",
+                    media_url: songUrl + " 18",
                     more_info: {
                         vlink: data[i].more_info.vlink,
                         primary_artists,
@@ -63,12 +64,19 @@ function allArtists(array) {
 
 function getStreamUrl(songId) {
     var streamUrl = ''
-    axios({
-        method: 'get',
-        url: 'https://djd2ewe-212-firevideoapp.vercel.app/song?id=iX_FM-ow'
-    }).then(async function(resp) {
-        console.clear()
-        console.log(resp)
-    })
-    return streamUrl
+
+    fetch('https://djd2ewe-212-firevideoapp.vercel.app/song?id=iX_FM-ow')
+    .then(res => res.json())
+    .then(out => 
+        console.log('Checkout this JSON! ', out))
+    .catch(err => { throw err })
+
+    // axios({
+    //     method: 'get',
+    //     url: 'https://djd2ewe-212-firevideoapp.vercel.app/song?id=iX_FM-ow'
+    // }).then(async function(resp) {
+    //     console.clear()
+    //     console.log(resp)
+    // })
+    // return streamUrl
 }
