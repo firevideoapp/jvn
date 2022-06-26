@@ -25,7 +25,7 @@ module.exports = async(req, res) => {
                 }).then(async function(resp) {
                     var dt = JSON.parse(JSON.stringify(resp.data).replace(songId, "TempID").replace(/&amp;/gi, "&").replace(/&copy;/gi, "©")).TempID
                     songUrl = dt[i].media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')
-                    alert(songUrl)
+                    alert(resp + "dasdsadsad")
                     songRes.push({
                         id: data[i].id,
                         title: data[i].title,
