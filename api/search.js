@@ -67,8 +67,9 @@ function getStreamUrl(songId) {
         method: 'get',
         url: `https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids=EwWjEcGi`
     }).then(function(response) {
-        var dt = JSON.parse(JSON.stringify(response).replace(songId, "TempID").replace(/&amp;/gi, "&").replace(/&copy;/gi, "©")).TempID
-        streamUrl = dt[i].media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')    
+        console.log(response)
+        // var dt = JSON.parse(JSON.stringify(response).replace(songId, "TempID").replace(/&amp;/gi, "&").replace(/&copy;/gi, "©")).TempID
+        // streamUrl = dt[i].media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')    
     })  
     return streamUrl
 }
