@@ -23,7 +23,7 @@ module.exports = async(req, res) => {
                     method: 'get',
                     url: `https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids=${songId}`
                 }).then(async function(resp) {
-                    var dt = JSON.parse(JSON.stringify(resp.data).replace(reqId, "TempID").replace(/&amp;/gi, "&").replace(/&copy;/gi, "©")).TempID
+                    var dt = JSON.parse(JSON.stringify(resp.data).replace(songId, "TempID").replace(/&amp;/gi, "&").replace(/&copy;/gi, "©")).TempID
                     songUrl = dt[i].media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')
                     alert(songUrl)
                     songRes.push({
