@@ -18,16 +18,8 @@ module.exports = async(req, res) => {
             for (i = 0; i < data.length; i++) {
                 var primary_artists = allArtists(data[i].more_info.artistMap.primary_artists)
                 var songId = data[i].id + "";
-                var songUrl;
-                axios({
-                    method: 'get',
-                    url: `https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids=${songId}`
-                }).then(async function(resp) {
-                    var dt = JSON.parse(JSON.stringify(resp.data).replace(songId, "TempID").replace(/&amp;/gi, "&").replace(/&copy;/gi, "©")).TempID
-                    songUrl = dt[i].media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')    
-                })  
-                
-                alert(songUrl + " 11")
+                var songUrl = getStreamUrl(data[i].id);
+
                 songRes.push({
                     id: data[i].id,
                     title: data[i].title,
@@ -67,4 +59,15 @@ function allArtists(array) {
         }
     });
     return artistdata
+}
+
+function getStreamUrl(songId) {
+    axios({
+        method: 'get',
+        url: `https://www.jiosaavn.com/api.php?__call=song.getDetails&cc=in&_marker=0%3F_marker%3D0&_format=json&pids=${songId}`
+    }).then(async function(response) {
+        var dt = JSON.parse(JSON.stringify(response).replace(songId, "TempID").replace(/&amp;/gi, "&").replace(/&copy;/gi, "©")).TempID
+        return dt[i].media_preview_url.replace('preview.saavncdn.com', 'aac.saavncdn.com').replace('_96_p', '_160')    
+    })  
+    return null
 }
